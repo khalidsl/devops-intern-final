@@ -32,6 +32,15 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install Python dependencies (if any)
+        run: |
+          if [ -f requirements.txt ]; then
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt
+          else
+            echo "No requirements.txt — skipping pip install"
+          fi
+
       - name: Smoke-test app (start, request, stop)
         run: |
           bash scripts/ci_smoke.sh
