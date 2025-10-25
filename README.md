@@ -61,13 +61,38 @@ python3 hello.py
 ```bash
 chmod +x scripts/sysinfo.sh
 ./scripts/sysinfo.sh
+--- Informations système ---
+Utilisateur courant: khalid
+Date actuelle: Sat Oct 25 10:58:59 +01 2025
+\nUtilisation des disques (df -h):
+Filesystem                                Size  Used Avail Use% Mounted on
+none                                      1.9G     0  1.9G   0% /usr/lib/modules/6.6.87.2-microsoft-standard-WSL2
+none                                      1.9G  4.0K  1.9G   1% /mnt/wsl
+none                                      1.9G  776K  1.9G   1% /mnt/wsl/docker-desktop/shared-sockets/host-services
+/dev/sdd                                 1007G   57M  956G   1% /mnt/wsl/docker-desktop/docker-desktop-user-distro
+drivers                                   476G  460G   17G  97% /usr/lib/wsl/drivers
+/dev/sdf                                 1007G  2.2G  954G   1% /
+none                                      1.9G  284K  1.9G   1% /mnt/wslg
+none                                      1.9G     0  1.9G   0% /usr/lib/wsl/lib
+rootfs                                    1.9G  2.7M  1.9G   1% /init
+none                                      1.9G  528K  1.9G   1% /run
+none                                      1.9G     0  1.9G   0% /run/lock
+none                                      1.9G     0  1.9G   0% /run/shm
+none                                      1.9G   76K  1.9G   1% /mnt/wslg/versions.txt
+none                                      1.9G   76K  1.9G   1% /mnt/wslg/doc
+C:\                                       476G  460G   17G  97% /mnt/c
+/dev/loop0                                482M  482M     0 100% /mnt/wsl/docker-desktop/cli-tools
+tmpfs                                     1.9G  4.0K  1.9G   1% /run/user/1000
+tmpfs                                     1.9G  4.0K  1.9G   1% /run/user/0
+C:\Program Files\Docker\Docker\resources  476G  460G   17G  97% /Docker/host
 ```
 
 3) Docker
 
 ```bash
 docker build -t devops-intern-final:latest .
-docker run --rm devops-intern-final:latest
+docker run --rm devops-intern-final:latest 
+Hello, DevOps!
 ```
 
 4) CI/CD (GitHub Actions)
@@ -78,6 +103,10 @@ docker run --rm devops-intern-final:latest
 5) Nomad
 
 ```bash
+#Utilise 
+chmod +x scripts/check_nomad.sh
+./scripts/check_nomad.sh
+#or 
 # construire l'image
 docker build -t devops-intern-final:latest .
 
@@ -90,6 +119,39 @@ nomad job run nomad/hello.nomad
 # vérifier le statut
 nomad job status hello
 ``` 
+
+Smoke tests
+
+Des scripts de vérification (smoke-tests) ont été ajoutés dans le dossier `scripts/` pour valider rapidement le pipeline local :
+
+- `scripts/check_nomad.sh` (bash/WSL) — reconstruit l'image, soumet la job Nomad, attend qu'une allocation soit RUNNING puis effectue une requête HTTP sur l'adresse dynamique.
+- `scripts/check_nomad.ps1` (PowerShell) — équivalent pour Windows.
+
+Exécution
+
+PowerShell (Windows) :
+
+```powershell
+.\scripts\check_nomad.ps1
+```
+
+Bash / WSL :
+
+```bash
+chmod +x scripts/check_nomad.sh
+./scripts/check_nomad.sh
+```
+
+Pré-requis
+
+- Nomad doit être accessible (si vous utilisez le conteneur Nomad, assurez-vous qu'il a `/var/run/docker.sock` monté afin d'utiliser les images locales).
+- Docker doit être installé et le démon actif.
+
+Sortie attendue
+
+Le script affiche les étapes (build, submit, wait) et doit finir par afficher `OK` et renvoyer le corps "Hello, DevOps!" si tout fonctionne.
+
+
 
 6) Monitoring (Loki + Promtail)
 
@@ -108,6 +170,6 @@ Le script enregistrera un run MLflow local et affichera l'ID du run.
 
 Support & captures d'écran
 
-Ajoutez vos captures d'écran sous un dossier `screenshots/` si nécessaire.
+Voici quelques exemples de captures d'écran utiles (stockées dans `docs/screenshots/`). Remplacez-les par vos propres images réelles :
 
-Bonne chance pour l'évaluation !
+
