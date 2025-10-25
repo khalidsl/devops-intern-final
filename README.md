@@ -156,6 +156,37 @@ Le script affiche les étapes (build, submit, wait) et doit finir par afficher `
 6) Monitoring (Loki + Promtail)
 
 Voir `monitoring/loki_setup.txt` et `monitoring/promtail-config.yml` pour les commandes Docker et la configuration Promtail.
+  
+### Comment l'architecture monitoring est implémentée
+
+Le monitoring est basé sur trois composants principaux :
+
+- **Loki** : stockage centralisé des logs, déployé en conteneur Docker avec configuration locale (`loki-local-config.yaml`). Les volumes nécessaires sont créés et montés pour la persistance.
+- **Promtail** : agent de collecte des logs, déployé en conteneur Docker. Il lit les fichiers de log système (`/var/log/*.log`) et, si configuré, les logs Docker (`/var/lib/docker/containers/*/*-json.log`). La configuration est dans `promtail-config.yml`.
+- **Grafana** : interface web pour visualiser et interroger les logs, déployée en conteneur Docker. La source de données Loki est provisionnée automatiquement.
+
+Le tout est orchestré via `docker-compose.yml` :
+
+- Les services sont définis avec leurs volumes et ports exposés.
+- Les fichiers de configuration sont montés en lecture seule dans les conteneurs.
+- Les volumes Docker assurent la persistance des données Loki et Grafana.
+
+**Démarrage rapide** :
+
+```bash
+cd monitoring
+docker compose up -d
+```
+
+Accédez à Grafana sur [http://127.0.0.1:3000](http://127.0.0.1:3000) (admin/admin).
+
+Dans Grafana, onglet « Explore », sélectionnez la source de données Loki et lancez une requête comme :
+```
+{job=~".+"}
+```
+pour afficher tous les logs collectés.
+
+Vous pouvez personnaliser la collecte en modifiant `promtail-config.yml` pour ajouter d'autres chemins ou labels.
 
 7) Bonus — MLflow
 

@@ -1,0 +1,26 @@
+Usage rapide : docker-compose pour Loki + Promtail + Grafana
+
+Depuis le dossier `monitoring/` du dépôt :
+
+```bash
+# démarrer la stack en arrière-plan
+docker compose up -d
+
+# vérifier les conteneurs
+docker compose ps
+
+# suivre les logs Promtail
+docker compose logs -f promtail
+
+# ouvrir Grafana : http://localhost:3000 (admin/admin)
+```
+
+Fichiers importants dans `monitoring/` :
+- `loki-local-config.yaml` : configuration de Loki (montée dans le conteneur Loki)
+- `promtail-config.yml` : configuration de Promtail (montée dans le conteneur Promtail)
+- `docker-compose.yml` : compose file qui démarre Loki, Promtail et Grafana
+- `grafana/provisioning/datasources/datasource.yaml` : provisionne automatiquement la datasource Loki dans Grafana
+
+Remarques :
+- Sur Docker Desktop Windows, l'accès à `/var/log` peut être limité ; testez sur WSL2 ou une VM Linux pour Promtail.
+- Les volumes `loki_data` et `grafana_data` sont créés localement pour persister les données.
