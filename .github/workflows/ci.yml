@@ -32,9 +32,9 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Run python script
+      - name: Smoke-test app (start, request, stop)
         run: |
-          python hello.py
+          bash scripts/ci_smoke.sh
 
       - name: Run sysinfo script (bash)
         run: |
