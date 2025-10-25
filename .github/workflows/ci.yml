@@ -4,13 +4,20 @@ on:
   push:
     branches: [ main ]
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout (shallow)
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: false
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -21,7 +28,6 @@ jobs:
         run: |
           python hello.py
 
-      - name: Run sysinfo script
+      - name: Run sysinfo script (bash)
         run: |
-          chmod +x scripts/sysinfo.sh || true
-          ./scripts/sysinfo.sh
+          bash scripts/sysinfo.sh
