@@ -1,0 +1,53 @@
+Loki & Promtail - Guide d'installation local (Docker)
+
+Ce fichier décrit comment démarrer Grafana Loki et Promtail localement avec Docker.
+
+1) Démarrer Loki
+
+```bash
+# Récupérer l'image Loki
+docker pull grafana/loki:2.8.2
+
+# Démarrer Loki (expose le port 3100)
+docker run -d --name loki -p 3100:3100 \
+  -v $(pwd)/monitoring:/etc/loki \
+  grafana/loki:2.8.2 -config.file=/etc/loki/loki-local-config.yaml
+```
+
+2) Démarrer Promtail
+
+Créez `monitoring/promtail-config.yml` (fourni dans ce dépôt). Puis :
+
+```bash
+docker pull grafana/promtail:2.8.2
+
+docker run -d --name promtail --net=host \
+  -v /var/log:/var/log:ro \
+  -v $(pwd)/monitoring/promtail-config.yml:/etc/promtail/promtail-config.yml \
+  grafana/promtail:2.8.2 \
+  -config.file=/etc/promtail/promtail-config.yml
+```
+
+Remarques :
+- Sur certains systèmes (ex : Docker Desktop Windows), l'accès à `/var/log` n'existe pas. Testez sur une VM Linux ou WSL2 pour un comportement fiable.
+
+3) Vérifier que Promtail envoie les logs
+
+Vous pouvez consulter les logs du conteneur Promtail :
+
+```bash
+docker logs -f promtail
+```
+
+Ou interroger Loki (exemple simplifié avec curl, nécessite logcli ou Grafana pour recherches avancées) :
+
+```bash
+# Exemple : vérifier que l'API Loki répond
+curl -s "http://localhost:3100/loki/api/v1/labels" | jq .
+```
+
+4) Voir les logs via Grafana
+
+- Pour une interface graphique, installez Grafana, ajoutez Loki comme source de données (URL: http://localhost:3100) et utilisez Explore pour interroger les logs.
+
+Fichier de configuration Promtail fourni : `monitoring/promtail-config.yml`.
