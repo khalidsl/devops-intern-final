@@ -17,13 +17,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
-          persist-credentials: false
 
       - name: Cache pip
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt', '**/extra/mlflow/requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
 
@@ -40,6 +39,16 @@ jobs:
           else
             echo "No requirements.txt — skipping pip install"
           fi
+
+      - name: Install MLflow dependencies
+        run: |
+          if [ -f extra/mlflow/requirements.txt ]; then
+            pip install -r extra/mlflow/requirements.txt
+          fi
+
+      - name: Run MLflow example
+        run: |
+          python extra/mlflow/mlflow_example.py
 
       - name: Smoke-test app (start, request, stop)
         run: |

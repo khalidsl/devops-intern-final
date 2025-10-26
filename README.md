@@ -6,7 +6,7 @@
 
 ---
 
-Ce dépôt contient un petit pipeline DevOps complet et reproductible, conçu pour l'évaluation finale.
+Ce dépôt contient un petit pipeline DevOps complet et reproductible,
 
 Objectifs couverts : Git/GitHub, scripting Linux, Docker, CI/CD (GitHub Actions), déploiement Nomad et monitoring (Grafana Loki + Promtail).
 
@@ -27,13 +27,10 @@ devops-intern-final/
    └─ requirements.txt
 ```
 
-Badge CI (exemple - mettez à jour le chemin avec votre utilisateur/repo) :
 
 ```
-![CI](https://github.com/khalidsl/devops-intern-final/actions/workflows/ci.yml/badge.svg)
+https://github.com/khalidsl/devops-intern-final
 ```
-
-IMPORTANT : remplacez `khalidsl/devops-intern-final` par votre `GITHUB_USER/REPO` après le push pour que le badge affiche l'état réel.
 
 ------
 
@@ -43,7 +40,7 @@ Prérequis (Linux recommandé)
 - docker
 - nomad (optionnel, pour exécuter la job Nomad)
 - docker-compose (optionnel, facilite Loki/Promtail)
-- python3 (pour tester les scripts locaux / MLflow)
+- py (pour tester les scripts locaux / MLflow)
 
 ------
 
@@ -52,7 +49,7 @@ Instructions rapides
 1) Tester Python localement
 
 ```bash
-python3 hello.py
+py hello.py
 # => Hello, DevOps!
 ```
 
@@ -61,6 +58,8 @@ python3 hello.py
 ```bash
 chmod +x scripts/sysinfo.sh
 ./scripts/sysinfo.sh
+
+```
 --- Informations système ---
 Utilisateur courant: khalid
 Date actuelle: Sat Oct 25 10:58:59 +01 2025
@@ -86,6 +85,7 @@ tmpfs                                     1.9G  4.0K  1.9G   1% /run/user/1000
 tmpfs                                     1.9G  4.0K  1.9G   1% /run/user/0
 C:\Program Files\Docker\Docker\resources  476G  460G   17G  97% /Docker/host
 ```
+```
 
 3) Docker
 
@@ -98,7 +98,6 @@ Hello, DevOps!
 4) CI/CD (GitHub Actions)
 
 - Le fichier `.github/workflows/ci.yml` exécute `python hello.py` et `scripts/sysinfo.sh` à chaque push.
-- Pushez ce dépôt sur GitHub et vérifiez l'onglet Actions.
 
 5) Nomad
 
@@ -110,13 +109,13 @@ chmod +x scripts/check_nomad.sh
 # construire l'image
 docker build -t devops-intern-final:latest .
 
-# démarrer nomad en mode dev (si non déjà lancé)
+#en démarrer nomad en mode dev 
 nomad agent -dev &
 
-# lancer la job Nomad
+#en lancer la job Nomad
 nomad job run nomad/hello.nomad
 
-# vérifier le statut
+# en vérifier le statut
 nomad job status hello
 ``` 
 
@@ -149,15 +148,14 @@ Pré-requis
 
 Sortie attendue
 
-Le script affiche les étapes (build, submit, wait) et doit finir par afficher `OK` et renvoyer le corps "Hello, DevOps!" si tout fonctionne.
-
+Le script affiche les étapes (build, submit, wait) et `OK` et renvoyer le corps "Hello, DevOps!" 
 
 
 6) Monitoring (Loki + Promtail)
 
 Voir `monitoring/loki_setup.txt` et `monitoring/promtail-config.yml` pour les commandes Docker et la configuration Promtail.
   
-### Comment l'architecture monitoring est implémentée
+# Comment l'architecture monitoring est implémentée
 
 Le monitoring est basé sur trois composants principaux :
 
@@ -188,19 +186,24 @@ pour afficher tous les logs collectés.
 
 Vous pouvez personnaliser la collecte en modifiant `promtail-config.yml` pour ajouter d'autres chemins ou labels.
 
-7) Bonus — MLflow
+###  MLflow Tracking
 
-```bash
-python3 -m pip install -r extra/mlflow/requirements.txt
-python3 extra/mlflow/mlflow_example.py
+Un exemple de script MLflow est fourni dans `extra/mlflow/mlflow_example.py` :
+
+```powershell
+py -m pip install -r extra/mlflow/requirements.txt
+py extra/mlflow/mlflow_example.py
 ```
 
-Le script enregistrera un run MLflow local et affichera l'ID du run.
+Ce script crée une expérience MLflow et enregistre un run local :
+```
+MLflow run enregistré : <run_id>
+```
+
+Vous pouvez consulter les runs et les paramètres enregistrés dans le dossier `.mlruns` généré localement.
 
 ------
 
-Support & captures d'écran
+captures d'écran
 
-Voici quelques exemples de captures d'écran utiles (stockées dans `docs/screenshots/`). Remplacez-les par vos propres images réelles :
-
-
+quelques  captures d'écran  (stockées dans `docs/screenshots/`). 

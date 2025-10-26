@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/zoro/devops-intern-final/mlruns/159402036727479418/395c461592ec499c96c2533aeec3f027/artifacts
+end_time: 1761437083737
+entry_point_name: ''
+experiment_id: '159402036727479418'
+lifecycle_stage: active
+run_id: 395c461592ec499c96c2533aeec3f027
+run_name: bouncy-shrimp-560
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1761437083663
+status: 3
+tags: []
+user_id: khalid
