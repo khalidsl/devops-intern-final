@@ -59,9 +59,8 @@ py hello.py
 chmod +x scripts/sysinfo.sh
 ./scripts/sysinfo.sh
 
-```
 --- Informations système ---
-Utilisateur courant: khalid
+Utilisateur courant:  user
 Date actuelle: Sat Oct 25 10:58:59 +01 2025
 \nUtilisation des disques (df -h):
 Filesystem                                Size  Used Avail Use% Mounted on
@@ -85,7 +84,7 @@ tmpfs                                     1.9G  4.0K  1.9G   1% /run/user/1000
 tmpfs                                     1.9G  4.0K  1.9G   1% /run/user/0
 C:\Program Files\Docker\Docker\resources  476G  460G   17G  97% /Docker/host
 ```
-```
+
 
 3) Docker
 
